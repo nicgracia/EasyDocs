@@ -1,0 +1,159 @@
+/* Definição de Variáveis de Cor */
+:root {
+  --cor-fundo: #F5F1E8;
+  --cor-verde-escuro: #004D40;
+  --cor-verde-medio: #6B8E23;
+  --cor-branco: #FFFFFF;
+  --cor-sombra: rgba(0, 0, 0, 0.08);
+  --cor-borda: #EAEAEA;
+}
+
+/* Reset e Estilos Globais */
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background-color: var(--cor-fundo);
+  color: var(--cor-verde-escuro);
+  line-height: 1.6;
+}
+
+/* Layout Principal */
+.container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 2rem;
+}
+
+/* Cabeçalho com Logo */
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2.5rem;
+}
+
+.header img {
+  width: 120px;
+}
+
+/* Botão de Login */
+.login-button {
+  background-color: var(--cor-verde-escuro);
+  color: var(--cor-branco);
+  border: none;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 auto;
+}
+
+.login-button:hover {
+  background-color: var(--cor-verde-medio);
+}
+
+/* Área de Filtros */
+.filtros {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  background-color: var(--cor-branco);
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px var(--cor-sombra);
+}
+
+select {
+  flex-grow: 1;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid var(--cor-borda);
+  border-radius: 6px;
+  background-color: var(--cor-branco);
+  color: var(--cor-verde-escuro);
+}
+
+/* --- ESTILOS PARA A GRADE DE ARQUIVOS --- */
+.grid-arquivos {
+  display: grid;
+  /* Cria colunas responsivas: elas terão no mínimo 200px e no máximo 1fr (fração do espaço) */
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+/* Container para cada item (card + nome) */
+.item-arquivo {
+  text-decoration: none;
+  color: var(--cor-verde-escuro);
+  text-align: center;
+  transition: all 0.2s ease-in-out;
+}
+
+.item-arquivo:hover {
+  transform: translateY(-4px); /* Levanta o item inteiro */
+}
+
+/* O card agora é apenas a área da imagem */
+.card-arquivo {
+  background-color: var(--cor-branco);
+  /* Borda inicial: verde médio, mas com transparência para ser sutil */
+  border: 2px solid rgba(107, 142, 35); /* Usando o RGB de --cor-verde-medio com 40% de opacidade */
+  border-radius: 12px; /* Um pouco mais arredondado para um visual mais suave */
+  box-shadow: 0 2px 8px var(--cor-sombra);
+  height: 180px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  transition: all 0.2s ease-in-out;
+}
+
+
+.item-arquivo:hover .card-arquivo {
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
+  /* A borda fica mais grossa e totalmente opaca no hover */
+  border: 3px solid var(--cor-verde-medio);
+}
+
+/* Estilo para a imagem de thumbnail */
+.card-arquivo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Cobre a área sem distorcer */
+}
+
+/* Estilo para o nome do arquivo, agora fora do card */
+.nome-arquivo {
+  font-weight: 500;
+  font-size: 0.9rem;
+  margin-top: 0.75rem;
+  padding: 0 5px;
+  /* Limita o nome a 2 linhas e adiciona "..." */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+   line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* --- REGRAS DE RESPONSIVIDADE --- */
+@media (max-width: 600px) {
+  .container {
+    padding: 0 1rem;
+  }
+
+  .header img {
+    width: 100px;
+  }
+
+  .filtros {
+    flex-direction: column;
+  }
+}
