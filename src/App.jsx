@@ -14,6 +14,7 @@ function App() {
   const [filtroObra, setFiltroObra] = useState('');
   const [filtroDisciplina, setFiltroDisciplina] = useState('');
   const [filtroTipo, setFiltroTipo] = useState('');
+  const [termoBusca, setTermoBusca] = useState(''); // Estado para a barra de pesquisa
 
   const login = useGoogleLogin({
     onSuccess: (tokenResponse) => {
@@ -24,14 +25,10 @@ function App() {
   } );
 
   const fetchFiles = async (token) => {
-    // ID da sua pasta central
     const folderId = '1k0xPyN3MMCdGhJZZJEIVwHYlQ8ETRvDF'; 
-    
-    // Esta query diz à API: "liste para mim todos os arquivos que estão dentro da pasta com este ID"
-    // Também adicionamos "trashed = false" para garantir que não mostre arquivos da lixeira.
     const query = encodeURIComponent(`'${folderId}' in parents and trashed = false`);
-
-    // Montamos a nova URL com a query e os campos que queremos
+    
+    // Garantindo que 'thumbnailLink' está na lista de campos
     const url = `https://www.googleapis.com/drive/v3/files?q=${query}&fields=files(id,name,webViewLink,thumbnailLink )`;
 
     const response = await fetch(url, {
@@ -40,7 +37,6 @@ function App() {
     const data = await response.json();
     setAllFiles(data.files || []);
   };
-  // -------------------------
 
   const arquivosFiltrados = useMemo(() => {
     return allFiles
@@ -54,12 +50,17 @@ function App() {
         };
       })
       .filter(file => {
+        // Filtros de dropdown
         const passaFiltroObra = !filtroObra || file.obraCode === filtroObra;
         const passaFiltroDisciplina = !filtroDisciplina || file.disciplinaCode === filtroDisciplina;
         const passaFiltroTipo = !filtroTipo || file.tipoCode === filtroTipo;
-        return passaFiltroObra && passaFiltroDisciplina && passaFiltroTipo;
+
+        // Filtro de busca por texto
+        const passaFiltroBusca = !termoBusca || file.name.toLowerCase().includes(termoBusca.toLowerCase());
+
+        return passaFiltroObra && passaFiltroDisciplina && passaFiltroTipo && passaFiltroBusca;
       });
-  }, [allFiles, filtroObra, filtroDisciplina, filtroTipo]);
+  }, [allFiles, filtroObra, filtroDisciplina, filtroTipo, termoBusca]); // Adicionado termoBusca aqui
 
   return (
     <div className="container">
@@ -78,6 +79,13 @@ function App() {
       {accessToken && (
         <div>
           <div className="filtros">
+            <input
+              type="text"
+              placeholder="🔎 Pesquisar por nome..."
+              className="barra-pesquisa"
+              value={termoBusca}
+              onChange={(e) => setTermoBusca(e.target.value)}
+            />
             <select onChange={(e) => setFiltroObra(e.target.value)} value={filtroObra}>
               <option value="">Todas as Obras</option>
               {Object.entries(obras).map(([code, name]) => (
@@ -110,7 +118,6 @@ function App() {
                 className="item-arquivo"
               >
                 <div className="card-arquivo">
-                  {/* Se o arquivo tiver um thumbnail, mostre. Senão, mostre um placeholder. */}
                   {file.thumbnailLink ? (
                     <img src={file.thumbnailLink} alt={`Pré-visualização de ${file.name}`} />
                   ) : (

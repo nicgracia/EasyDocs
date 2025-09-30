@@ -78,10 +78,24 @@ select {
   color: var(--cor-verde-escuro);
 }
 
+/* Estilo para a nova Barra de Pesquisa */
+.barra-pesquisa {
+  flex-grow: 2; /* Dá mais espaço para a barra de pesquisa */
+  padding: 10px 15px;
+  font-size: 1rem;
+  border: 1px solid var(--cor-borda);
+  border-radius: 6px;
+  background-color: var(--cor-branco);
+  color: var(--cor-verde-escuro);
+}
+
+.barra-pesquisa::placeholder {
+  color: #999;
+}
+
 /* --- ESTILOS PARA A GRADE DE ARQUIVOS --- */
 .grid-arquivos {
   display: grid;
-  /* Cria colunas responsivas: elas terão no mínimo 200px e no máximo 1fr (fração do espaço) */
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 2rem;
   margin-top: 2rem;
@@ -96,15 +110,14 @@ select {
 }
 
 .item-arquivo:hover {
-  transform: translateY(-4px); /* Levanta o item inteiro */
+  transform: translateY(-4px);
 }
 
 /* O card agora é apenas a área da imagem */
 .card-arquivo {
   background-color: var(--cor-branco);
-  /* Borda inicial: verde médio, mas com transparência para ser sutil */
-  border: 2px solid rgba(107, 142, 35); /* Usando o RGB de --cor-verde-medio com 40% de opacidade */
-  border-radius: 12px; /* Um pouco mais arredondado para um visual mais suave */
+  border: 2px solid rgba(107, 142, 35, 0.4);
+  border-radius: 12px;
   box-shadow: 0 2px 8px var(--cor-sombra);
   height: 180px;
   display: flex;
@@ -114,10 +127,8 @@ select {
   transition: all 0.2s ease-in-out;
 }
 
-
 .item-arquivo:hover .card-arquivo {
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
-  /* A borda fica mais grossa e totalmente opaca no hover */
   border: 3px solid var(--cor-verde-medio);
 }
 
@@ -125,7 +136,7 @@ select {
 .card-arquivo img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Cobre a área sem distorcer */
+  object-fit: cover;
 }
 
 /* Estilo para o nome do arquivo, agora fora do card */
@@ -134,16 +145,21 @@ select {
   font-size: 0.9rem;
   margin-top: 0.75rem;
   padding: 0 5px;
-  /* Limita o nome a 2 linhas e adiciona "..." */
   display: -webkit-box;
   -webkit-line-clamp: 2;
-   line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 /* --- REGRAS DE RESPONSIVIDADE --- */
+@media (max-width: 768px) {
+  .filtros {
+    flex-direction: column;
+  }
+}
+
 @media (max-width: 600px) {
   .container {
     padding: 0 1rem;
@@ -151,9 +167,5 @@ select {
 
   .header img {
     width: 100px;
-  }
-
-  .filtros {
-    flex-direction: column;
   }
 }
