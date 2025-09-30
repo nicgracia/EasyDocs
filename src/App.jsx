@@ -24,13 +24,23 @@ function App() {
   } );
 
   const fetchFiles = async (token) => {
-    // Pedimos os campos necessários, incluindo o thumbnailLink
-    const response = await fetch('https://www.googleapis.com/drive/v3/files?fields=files(id,name,webViewLink,thumbnailLink )', {
+    // ID da sua pasta central
+    const folderId = '1k0xPyN3MMCdGhJZZJEIVwHYlQ8ETRvDF'; 
+    
+    // Esta query diz à API: "liste para mim todos os arquivos que estão dentro da pasta com este ID"
+    // Também adicionamos "trashed = false" para garantir que não mostre arquivos da lixeira.
+    const query = encodeURIComponent(`'${folderId}' in parents and trashed = false`);
+
+    // Montamos a nova URL com a query e os campos que queremos
+    const url = `https://www.googleapis.com/drive/v3/files?q=${query}&fields=files(id,name,webViewLink,thumbnailLink )`;
+
+    const response = await fetch(url, {
       headers: { 'Authorization': `Bearer ${token}` },
     });
     const data = await response.json();
     setAllFiles(data.files || []);
   };
+  // -------------------------
 
   const arquivosFiltrados = useMemo(() => {
     return allFiles
